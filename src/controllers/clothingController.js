@@ -34,3 +34,27 @@ exports.getClothingItems = async (req, res) => {
         res.status(500).json({ message: 'Erro ao buscar roupas', error: error.message });
     }
 };
+
+exports.getClothingItemsByDonor = async (req, res) => {
+    try {
+        const donorId = req.params.donorId; // Obtenha o donorId dos parâmetros da URL
+
+        // Verifique se o donorId é fornecido
+        if (!donorId) {
+            return res.status(400).json({ message: 'donorId é obrigatório.' });
+        }
+
+        // Encontre os itens de vestuário para o donorId específico
+        const clothingItems = await ClothingItem.find({ donorId })
+            .select('itemName description status') // Selecione apenas os campos necessários
+            .exec();
+
+        // Retorne os itens encontrados
+        res.status(200).json(clothingItems);
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar roupas', error: error.message });
+    }
+};
+
+
+
