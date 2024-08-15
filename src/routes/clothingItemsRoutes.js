@@ -1,11 +1,11 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const ClothingItem = require('../models/ClothingItem'); // Adjust path as needed
+const ClothingItem = require('../models/ClothingItem');
+const { getClothingIventory, patchClothingById, deleteClothingById } = require('../controllers/clothingController');
 
 const router = express.Router();
 
-// Multer setup for handling file uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads/');
@@ -16,14 +16,12 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// POST route for adding a new clothing item
 router.post('/clothing-items', upload.array('images', 6), async (req, res) => {
     try {
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({ message: 'No files were uploaded.' });
         }
 
-        // Check if donorId is present in req.body
         if (!req.body.donorId) {
             return res.status(400).json({ message: 'donorId is required.' });
         }
@@ -89,5 +87,10 @@ router.delete('/clothing-items/:id', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+
+router.get('/inventory', getClothingIventory);
+router.patch('/clothing-items/:id', patchClothingById);
+router.delete('/clothing-items/:id', deleteClothingById);
+
 
 module.exports = router;
