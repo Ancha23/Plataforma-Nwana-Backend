@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const ClothingItem = require('../models/ClothingItem');
-const { getClothingIventory, patchClothingById, deleteClothingById } = require('../controllers/clothingController');
+const { getClothingIventory, patchClothingById, deleteClothingById, getAppovedItens } = require('../controllers/clothingController');
 
 const router = express.Router();
 
@@ -89,7 +89,9 @@ router.delete('/clothing-items/:id', async (req, res) => {
 });
 
 router.get('/inventory', getClothingIventory);
+router.get('/approved-donations', getAppovedItens);
 router.patch('/clothing-items/:id', patchClothingById);
+router.delete('/clothing-items/:id', deleteClothingById);
 router.delete('/clothing-items/:id', deleteClothingById);
 
 

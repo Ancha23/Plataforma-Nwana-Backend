@@ -65,3 +65,11 @@ exports.deleteClothingById = async (req, res) => {
     }
 };
 
+exports.getAppovedItens = async (req, res) => {
+    try {
+        const approvedItems = await ClothingItem.find({ status: 'Aprovado' });
+        res.json(approvedItems);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao buscar as doações aprovadas.' });
+    }
+};
